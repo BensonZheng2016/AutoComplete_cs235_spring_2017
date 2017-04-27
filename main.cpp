@@ -1,6 +1,7 @@
 #include <iostream>
 #include "trie.h"
 #include "dictionary.h"
+#include <vector>
 
 using namespace std;
 
@@ -192,10 +193,13 @@ int main(int argc, char* argv[]) {
   cout<<mydict.isLegalWord("able")<<endl;
   
   cout<<"-------testing dictionary suggest()		---"<<endl;
-  mydict.suggest("ab",10);
+  vector<string> suggestwords;
+  suggestwords = mydict.suggest("ab",10);
+  
+  for (unsigned int i = 0; i <suggestwords.size(); ++i) {
+    cout<<suggestwords[i]<<endl;
+  }
 
-  trieNode* testing = mydict.findAny("abso");
-  cout<<endl<<testing->child.size()<<" at address: "<<testing<<endl;	//looks like address at 'o' is not same in suggest()'s 'o'
     
 
   return 0;

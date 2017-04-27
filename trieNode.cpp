@@ -237,3 +237,26 @@ unsigned int trieNode::countNodes() {
   //std::cout<<"This should not run"<<std::endl;
   return childNumber;						
 }
+
+//findWord helper, recursive call, will sometime return a empty string, if 
+std::string trieNode::findWordHelper(std::string& a, const trieNode& node) {
+  std::map<char,trieNode>::iterator it;
+  it = child.begin();
+  std::string word = "";
+
+  //trasverse the map, appent to string, once base case it hit, popback from string, return the string if address matches.
+  for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
+    a += it->first;
+    if (&it->second == &node)
+      return a;			//base case if address == address.
+    word = child[it->first].findWordHelper(a,node);			//recursivly call sub map, store the base case output to be return when recursive call returns.
+    a.erase(a.end()-1);
+  }
+  return word;
+}
+
+//called by dictionary class's suggest(), search trie for any word with last char that is the same address as the argument.
+std::string trieNode::findWord(const trieNode& a) {
+  std::string word = "";
+  return findWordHelper(word,a);
+}

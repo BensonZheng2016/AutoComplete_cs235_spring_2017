@@ -24,6 +24,7 @@ class trie {
   unsigned int numWords();
   unsigned int countNodes();
   bool load(std::string a);
+  std::string findWord(const trieNode& a);
 
  private:
   trieNode _root;

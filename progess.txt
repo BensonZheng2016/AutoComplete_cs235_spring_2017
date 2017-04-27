@@ -1,0 +1,59 @@
+do insert single char					done
+change bool end of word to turn on on last char		done
+do insert string					done
+do insert string with CAP				done NOTE, will not return false when the word is contained...
+do insert with subword					GOT TO DO MORE TEST. UNCONFIRM
+
+do contain single char					done
+do contain string					done
+  need to convert strig to all lower case		done, translate upper case to lower case as it is referenced.
+
+do print whie trasvering with increment and decrement string, only print when end of word is true	DONE
+  one of the recursive call is returning true, but only once, and it's not picking up over all		DONE
+
+do remove						done
+  remove complete word					done
+  remove subword					done
+  remove with capital letter				done
+
+do clear						done
+  calls the map's clear(),				done
+  compiles fine, have to do some testing,		done
+  with words and such.					done
+
+do numWords()						done
+  BUG, number of words is 1+ the actual amount.		need more testing, not sure if this error still occurs.
+  gets update from insert and remove			done
+
+do nodeCount()						done
+  suggestion: might have to do 1+ final count to,	doesn't seem like a problem now.
+  account for the root.					no it doesn,not suppose to.
+
+do trie class contain (string)				done
+  not reliable, FIX THIS FIRST.				done
+  implement a trieNode* find(const string& a) const; if retur null, means the string doesn't existin trie. done
+
+do trieNode* find()					done
+  returns a pointer to the place with the key of the last char and its child.	 done
+
+do load()						done
+
+do consturcotre with one argument			done
+
+do ./test with one argument				done
+
+do output to file, just to chk if diff -s with orginal text file.	wont work, some repeation exists, like a and A.
+
+change trienode fcts to input reference			done
+  gonna leave trie input to non reference just to deal with main.cpp.	done
+
+do dictionary suggest()
+  some case return vector of size 0, deal with that in main.cpp, if size = 0, means words not recognize, and have no suggestion.	
+  make a new find() that finds incomplete words. return nullptr only if no such sub word exist in the trie.				done
+  maybe to make it more efficient, do find(), to go to a particular node, then do print search to append the word. as of right now, only has print code.
+  has no limit yet, not chked n yet.
+
+rest of dictionary fct are done! except for suggest()
+
+
+

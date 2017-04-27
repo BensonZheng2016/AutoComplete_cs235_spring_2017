@@ -14,10 +14,9 @@ class dictionary {
   bool isLegalWord(std::string a);
   unsigned int numWords();
   std::vector<std::string> suggest(std::string s, int n);
-
-  //for testing purposes
   void print();
   trieNode* findAny(std::string a);
+  std::string findWord(const trieNode& a);
 
  private:
   trie _data;  

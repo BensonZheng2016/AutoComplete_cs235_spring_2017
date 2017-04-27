@@ -94,7 +94,7 @@ std::vector<std::string> dictionary::suggest(std::string s, int n){
   trieNode* ptr = _data.findAny(s);
   if (ptr == nullptr or ptr->child.size() == 0)			//if ptr is leave or null, return vector of size 0, no match to suggest.
     return closewords;	
-  std::cout<<ptr->child['s'].child['o'].child.size()<<std::endl;	//detects 'o' correctly.
+  //std::cout<<ptr->child['s'].child['o'].child.size()<<std::endl;	//detects 'o' correctly.
 
   std::queue<trieNode*> workingspace;
   workingspace.push(ptr);
@@ -110,12 +110,32 @@ std::vector<std::string> dictionary::suggest(std::string s, int n){
   std::cout<<workingspace.front()->child.size()<<std::endl;
   workingspace.pop();
 */
-
+  //vector
   while(!workingspace.empty()) {
-    trieNode* ptr2;
+    int counter = 0;
+    trieNode* ptr2 = workingspace.front();
+
+    for (std::map<char,trieNode>::iterator it = ptr2->child.begin(); it != ptr2->child.end(); ++it) {	//level traversal, this entire while loop.
+      std::cout<<"pushing: "<<it->first<<std::endl;
+      if (it->second.endOfWord == true) {
+        std::string temp = _data.findWord(it->second);
+        if (temp != "")	{	//sometime findWord() will return an empty string, not sure why.
+          closewords.push_back(temp);		//will search for word and push back on to the vector.
+          ++counter;
+        }
+      }
+    
+      if (counter == n)
+        return closewords;			//once we found n number of words that's close enough for suggest, return the vector.  
+     
+      workingspace.push(&it->second);
+    }
+    std::cout<<std::endl;
+
+    workingspace.pop();
   }
   
-
+  return closewords;		//at this point, this vector should be filled with some amount of words, less than n, if coundn't find more than n word.
 }
 
 //for testing purposes, print all words contained in this dicitonary.
@@ -126,4 +146,9 @@ void dictionary::print() {
 //given a string, find its pattern in the trie, if not exist, return nullptr.
 trieNode* dictionary::findAny(std::string a) {
   return _data.findAny(a);
+}
+
+//helper to suggest(), find a word in the trie that has its last char same address as the argument.
+std::string dictionary::findWord(const trieNode& a) {
+  return _data.findWord(a);
 }

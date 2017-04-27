@@ -17,6 +17,8 @@ struct trieNode {
   bool remove(char& a);
   bool remove(std::string& a);
   unsigned int countNodes();
+  std::string findWordHelper(std::string& a, const trieNode& node);
+  std::string findWord(const trieNode& a);
  
   std::map<char, trieNode> child;
   bool endOfWord = false;

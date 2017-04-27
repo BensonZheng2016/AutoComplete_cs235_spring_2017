@@ -189,3 +189,8 @@ bool trie::load(std::string a) {
   else
     return false;
 }
+
+//called by suggest() from dictionary class, find the a word by comparing to a trieNode address.
+std::string trie::findWord(const trieNode& a) {
+  return _root.findWord(a);
+}
