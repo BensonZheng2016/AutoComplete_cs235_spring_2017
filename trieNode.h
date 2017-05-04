@@ -1,3 +1,13 @@
+/***************************************************************
+Title: Auto-Complete
+Author: Yi Zong Kuang
+Date Created: late april 2017
+Class: Spring 2017, CSCI 235, Mon & Wed 5:35pm-6:50pm
+Professor: Michael Garod
+Purpose: Project 3 - Auto complete incomplete words.
+Description: Defining trieNode struct.
+***************************************************************/
+
 #ifndef TRIENODE_H
 #define TRIENODE_H
 #include <map>

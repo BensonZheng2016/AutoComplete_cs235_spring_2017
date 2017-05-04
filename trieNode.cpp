@@ -1,3 +1,13 @@
+/***************************************************************
+Title: Auto-Complete
+Author: Yi Zong Kuang
+Date Created: late april 2017
+Class: Spring 2017, CSCI 235, Mon & Wed 5:35pm-6:50pm
+Professor: Michael Garod
+Purpose: Project 3 - Auto complete incomplete words.
+Description: Defining the members of a trieNode.
+***************************************************************/
+
 #include "trieNode.h"
 #include <iostream>
 
@@ -183,44 +193,16 @@ unsigned int trieNode::countNodes() {
 std::string trieNode::findWordHelper(std::string& buffer, const std::map<char,trieNode>::iterator& nodeIt, std::string& suffix) {
   std::map<char,trieNode>::iterator it;
   it = child.begin();
-/*
-  //trasverse the map, appent to string, once base case it hit, popback from string, return the string if address matches.
-  for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
-    buffer += it->first;     
-    
-    if (it->second.endOfWord == true) {
-      std::cout<<"appending: "<<buffer<<std::endl;
-    }
-
-    if (&it->second == &node) { std::cout<<"arrived at node:  "<<buffer<<std::endl;
-      suffix = buffer;			//remember the word.
-      return suffix;			//base case if address == address.
-    }
-    //word = child[it->first].findWordHelper(a,node);			//recursivly call sub map, store the base case output to be return when recursive call returns.
-    child[it->first].findWordHelper(buffer,node,suffix);
-    buffer.erase(buffer.end()-1);
-  }
-  //std::cout<<"ran"<<std::endl;
-  return suffix;
-*/
  
   for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
-    //trieNode& temp = nodeIt->second;
-    //trieNode& temp2 = it->second;
     buffer += it->first;
     if (&it->second == &nodeIt->second) {
-      std::cout<<"base case->   address it: "<<&it->second<<" address nodeIt(should be the one we are looking for): "<<&nodeIt->second <<std::endl;
-      //std::cout<<"it same: "<<buffer<<std::endl;
       suffix = buffer;
       return suffix;
     }
-    //std::cout<<buffer<<std::endl;
-    //if (it->second.endOfWord == true)
-      //std::cout<<"true word:    "<<buffer<<std::endl;
     child[it->first].findWordHelper(buffer,nodeIt,suffix);			//recursivly call sub map.
     buffer.erase(buffer.end()-1);
   }
-std::cout<<"this ran and returned with buffer: "<<buffer<<std::endl; 
   return suffix;
 }
 
@@ -228,8 +210,5 @@ std::cout<<"this ran and returned with buffer: "<<buffer<<std::endl;
 std::string trieNode::findWord(const std::map<char,trieNode>::iterator& nodeIt) {
   std::string buffer = "";
   std::string suffix = "";
-  //return findWordHelper(word,a);
   return findWordHelper(buffer,nodeIt,suffix);
-  //std::cout<<suffix<<std::endl;
-  //return suffix;
 }

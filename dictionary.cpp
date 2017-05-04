@@ -1,3 +1,13 @@
+/***************************************************************
+Title: Auto-Complete
+Author: Yi Zong Kuang
+Date Created: late april 2017
+Class: Spring 2017, CSCI 235, Mon & Wed 5:35pm-6:50pm
+Professor: Michael Garod
+Purpose: Project 3 - Auto complete incomplete words.
+Description: Defining the members of a dictionary class.
+***************************************************************/
+
 #include "dictionary.h"
 #include <queue>
 #include <iostream>
@@ -58,22 +68,17 @@ std::vector<std::string> dictionary::suggest(std::string s, int n){
     for (std::map<char,trieNode>::iterator it = ptr2->child.begin(); it != ptr2->child.end(); ++it) {	//level traversal, this entire while loop.
       if (it->second.endOfWord == true) {
         std::string temp = s; 
-        //temp += ptr2->findWord(it->second);		//take string s, and search after this current node. Should reduce search time by quite a lot in large dictionary.
-        temp += ptr->findWord(it);    //std::cout<<&it->second<<std::endl;
+        temp += ptr->findWord(it);    
         if (temp != "")	{	//sometime findWord() will return an empty string, not sure why.
           closewords.push_back(temp);		//will search for word and push back on to the vector.
-   std::cout<<"pushing back: "<<temp<<" with flag: "<<it->second.endOfWord<<" and key: "<<it->first<<" and address of it->second: "<<&it->second<<std::endl;
-          //++counter;
         }
-        if (temp == "")						//for debuging purposes.
-          std::cout<<"findword(it) returned empty string"<<std::endl;
       }
     
       if (closewords.size() == unsigned(n))
         return closewords;			//once we found n number of words that's close enough for suggest, return the vector.  
      
       workingspace.push(&it->second);
-    }//std::cout<<"couter:"<<counter<<std::endl;
+    }
     workingspace.pop();
   }
   return closewords;		//at this point, this vector should be filled with some amount of words, less than n, if coundn't find more than n word.
@@ -94,6 +99,7 @@ std::string dictionary::findWord(const std::map<char,trieNode>::iterator& nodeIt
   return _data.findWord(nodeIt);
 }
 
+//return the number of nodes in the trie, calculated in real time.
 unsigned int dictionary::countNodes() {
   return _data.countNodes();
 }

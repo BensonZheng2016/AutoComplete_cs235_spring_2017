@@ -4,7 +4,7 @@ CFLAGS = -c -Wall
 
 SOURCES = main.cpp trieNode.cpp trie.cpp dictionary.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
-EXECUTABLE_NAME = test
+EXECUTABLE_NAME = Autocomplete
 
 all: $(EXECUTABLE_NAME)
 
