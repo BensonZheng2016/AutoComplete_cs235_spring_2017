@@ -54,10 +54,8 @@ std::string trie::changeToAllLowerCase(std::string& a) {
   std::string toBeReturn = "";
 
   for (int i = a.size() - 1; i > 0; --i) {
-    std::cout<<"***"<<char((a[i]%65)%32)<<std::endl;
     toBeReturn += ((a[i]%65)%32);
   }
-  //std::cout<<toBeReturn<<std::endl;
   return toBeReturn;
 }
 
@@ -71,40 +69,6 @@ bool trie::contain(char a) {
 bool trie::contain(std::string a) {
   if (a == "")
     return false;
-
-  //change a to all lower case.
-  //a = changeToAllLowerCase(a);
-
-  //std::string buffer="";
-  //return root.contain(a,buffer);
-//*********************************
-//std::cout<<"chking "<<a<<std::endl;
-
-/*
-char temp;
-
-  trieNode *itr = &_root;
-  for (unsigned int i = 0 ;itr->child.size() != 0 and i < a.length() ;++i) {		//while the current pointed map is not size 0, means it haven't reached the end of the map yet.
-    temp = a[i];									//also while index i haven't hit the end of string a.
-    if (temp >= 'A' and temp <= 'Z') {
-      temp = temp + 32; 		//changes to lower case.
-    }
-
-    if (itr->contain(temp) == false) {							
-      return false;					//if it doens't contain , then no need to search anymore.
-    }
-std::cout<<"a[i]: "<<a[i]<<" temp: "<<temp<<std::endl;
-
-    if ( itr->contain(temp) and itr->child[temp].endOfWord == true) {								
-      return true;						//return true only if map contain all of char in string and have end of word flag on true, and if current string size is 0, cuz that mean it's really the end of the word.
-    }
-    			//it is assumed current map contain a char from the string, move the itr down one level.
-    itr = &itr->child[temp];			//change the itr pointer to point to the current key that's looking to be matched.
-  }
-
-std::cout<<"testing if it ever hit this part.."<<std::endl;
-  return false; 		//at this point, it's assumed that the for loop reached the end of map and contain no matched words. But this part should never be reach in the function. maybe except when you chk for a subwod that is not consider a end of word in the trie.
-*/
 
   trieNode* ptr = _root.find(a);
   if (ptr == nullptr)
@@ -190,7 +154,7 @@ bool trie::load(std::string a) {
     return false;
 }
 
-//called by suggest() from dictionary class, find the a word by comparing to a trieNode address.
-std::string trie::findWord(const trieNode& a) {
-  return _root.findWord(a);
+//called by suggest() from dictionary class, find the a word by comparing to a trieNode address, starts at the node that is current in suggest().
+std::string trie::findWord(const std::map<char,trieNode>::iterator& nodeIt) {
+  return _root.findWord(nodeIt);
 }

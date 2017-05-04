@@ -47,13 +47,25 @@ do output to file, just to chk if diff -s with orginal text file.	wont work, som
 change trienode fcts to input reference			done
   gonna leave trie input to non reference just to deal with main.cpp.	done
 
-do dictionary suggest()
-  some case return vector of size 0, deal with that in main.cpp, if size = 0, means words not recognize, and have no suggestion.	
+do dictionary suggest()							DONE
+  some case return vector of size 0, deal with that in main.cpp, if size = 0, means words not recognize, and have no suggestion.	done
   make a new find() that finds incomplete words. return nullptr only if no such sub word exist in the trie.				done
-  maybe to make it more efficient, do find(), to go to a particular node, then do print search to append the word. as of right now, only has print code.
-  has no limit yet, not chked n yet.
+  maybe to make it more efficient, do find(), to go to a particular node, then do print search to append the word. as of right now, only has print code.	DONE	
+  has no limit yet, not chked n yet.		done
+  BUG: sometime return empty string not sure why.
 
-rest of dictionary fct are done! except for suggest()
+rest of dictionary fct are done! except for suggest()				DONE
 
+suggest() dont' actually suggest all the words!!! GOT TO FIX			FIXed
+
+document the codes.
+
+DOES node contain(string) take care of space?   		yes somehow...
+
+ch intergreity of flag, for some reason it was detecting abc in sugesst as a true word.		intergrity is fine.
+
+returns repeated words from findword() in suggest()		fixed,fixed by dont return the buffer working space, make a copy of that specific state and return the copied state instead.
+
+Make it more efficient, load and search. make it as fast as professor's.
 
 

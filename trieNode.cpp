@@ -57,13 +57,6 @@ trieNode* trieNode::find(std::string& a) {
   if (itr->endOfWord == true)
     return itr;					//itr will hold the reference of the trieNode with the key of the last char and its child map.
   else {
-    std::map<char,trieNode>::iterator it;
-    it = itr->child.begin();			//THIS PART CAN BE DELETED, ONLY HERE FOR TESING.
-    for (;it!=itr->child.end();++it) {
-      std::cout<<it->first<<std::endl;
-    }
-
-    //std::cout<<"last null returned"<<std::endl;
     return nullptr;
   }
 }
@@ -89,28 +82,6 @@ trieNode* trieNode::findAny(std::string& a) {
   return itr;					//itr will hold the reference of the trieNode with the key of the last char and its child map.
 }
 
-//chk if a string is contained in the trie as a complete word. a contain the word to be searched for, and buffer is the words to be made from the trie.
-//bool trieNode::contain(std::string a, std::string& buffer) {
-/* The following will be able to chk contain(string) but only on string with all lower case.
-
-  std::map<char,trieNode>::iterator it;
-  it = child.begin();
-
-  for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
-    buffer += it->first;
-    if (it->second.endOfWord == true and a == buffer)	//end of word flag is on and a == buffer, means word is found in the trie.
-      return true;
-    //std::cout<<buffer<<std::endl;
-    if ( child[it->first].contain(a,buffer) == true)	//recursivly call sub map. It is still ran even though it's in a if statement.
-      return true;
-    buffer.erase(buffer.end()-1);
-  }
-  
-  //at this point it is assumed it is at child.end() so the inputed string was not found.
-  return false;
-*/
-//}
-
 //converts upper case to lower case (char).
 char trieNode::upperToLower(char& a) {
   return (a+32);
@@ -123,7 +94,6 @@ bool trieNode::insert(char& a) {
 
   trieNode temp;				//creates a new trieNode that will be passed as reference in the insert function of the map.
   child.insert( std::pair<char,trieNode>(a,temp) );		//inserted down one level, so at that one level it's default to be endOfWord=false.
-  //endOfWord = false;				//set end of word to false(on current level), now that there is something to insert after this current node. defualt is set to false.
   return true;
 }
 
@@ -137,7 +107,6 @@ bool trieNode::insert(std::string& a) {
   char firstchar = a[0];
   if (firstchar >= 'A' and firstchar<= 'Z') {			//chk if it's upper case.
     firstchar = upperToLower(firstchar);
-    //std::cout<<"ran: "<<firstchar<<std::endl;
   }
 
   insert(firstchar);
@@ -152,13 +121,6 @@ void trieNode::print(std::string& a) {
 
   std::map<char,trieNode>::iterator it;
   it = child.begin();
-/*
-  for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
-    std::cout << it->first << it->second.endOfWord << std::endl;
-    child[it->first].print();			//recursivly call sub map.
-    std::cout<<"----"<<std::endl;
-  }
-*/
 
   //trasverse the map, appent to string, once base case it hit, popback from string, output string only when endOfWord is true.
   for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
@@ -172,7 +134,6 @@ void trieNode::print(std::string& a) {
 
 //removes a node from current level's map base on a char.
 bool trieNode::remove(char& a) {
-//call map's removal of [a]???
   child.erase(a);
   return true;
 }
@@ -198,28 +159,9 @@ bool trieNode::remove(std::string& a) {
 
   if (child[temp].child.size() == 0 and (child[temp].endOfWord == false or a.size() == 0) ) {//end of word flag will stop the erase fct once it hit a end of word flag true. THere fore will not remove prefix, will have an exception when a leaf is reached.
     child.erase(temp);		//erase from child map, if the temp's child map's size is zero, which means it's at the end of the tree (in other words, end of the word).
-    //std::cout<<"erasing child["<<temp<<"]"<<std::endl;
   }
-
-  //maybe i dont need this, cuz if it's not size 0, it's gonna be some word, no need to change the flag.
-  //if (child.size() > 0 and child[temp].endOfWord != true)	{	//this means the string being deleted is a sub word. Will change all flag to false until the next flag true is reached.
-    //child[temp].endOfWord = false;		
-    //std::cout<<"setting end of word to false for one level above: "<<temp<<std::endl; 
-  //}
     
   return true;
-
-  //only change the flag if it is a sub word.
-  //how to detect if it's a sub word?
-  //maybe last char of the string has a child.size > 0.
-
-
-  //if last char is one of the last nodes, delete from map, and keep deleting up the level util (child.size > 1 or endOfWord flag = true is hit). Logic of trie is that all end branches MUST be true for the flag. and the logic for the child.size is that that node have other chars in its child, so it won't make sense to delete those other chars too.
-
-  //to detect if last char is one of the end node, simply chk if child.size == 0.
-
-
-  //probably would need an recusive solution. iterative might need two pointer, one points to the upper level, and the otehr points to the current level. might be complicated.
 }
 
 //recursivly count how many node are in the trie in real time. It really counts just the number of child under each node.
@@ -234,29 +176,60 @@ unsigned int trieNode::countNodes() {
   for (; it != child.end(); ++it, ++childNumber) {	//base case is when it go to end of the map. Also updates child number.
     childNumber += child[it->first].countNodes();	//recursivly call sub map. Will add on to child number the number of child of the child.
   } 
-  //std::cout<<"This should not run"<<std::endl;
   return childNumber;						
 }
 
 //findWord helper, recursive call, will sometime return a empty string, if 
-std::string trieNode::findWordHelper(std::string& a, const trieNode& node) {
+std::string trieNode::findWordHelper(std::string& buffer, const std::map<char,trieNode>::iterator& nodeIt, std::string& suffix) {
   std::map<char,trieNode>::iterator it;
   it = child.begin();
-  std::string word = "";
-
+/*
   //trasverse the map, appent to string, once base case it hit, popback from string, return the string if address matches.
   for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
-    a += it->first;
-    if (&it->second == &node)
-      return a;			//base case if address == address.
-    word = child[it->first].findWordHelper(a,node);			//recursivly call sub map, store the base case output to be return when recursive call returns.
-    a.erase(a.end()-1);
+    buffer += it->first;     
+    
+    if (it->second.endOfWord == true) {
+      std::cout<<"appending: "<<buffer<<std::endl;
+    }
+
+    if (&it->second == &node) { std::cout<<"arrived at node:  "<<buffer<<std::endl;
+      suffix = buffer;			//remember the word.
+      return suffix;			//base case if address == address.
+    }
+    //word = child[it->first].findWordHelper(a,node);			//recursivly call sub map, store the base case output to be return when recursive call returns.
+    child[it->first].findWordHelper(buffer,node,suffix);
+    buffer.erase(buffer.end()-1);
   }
-  return word;
+  //std::cout<<"ran"<<std::endl;
+  return suffix;
+*/
+ 
+  for (; it != child.end(); ++it) {		//base case is when it go to end of the map.
+    //trieNode& temp = nodeIt->second;
+    //trieNode& temp2 = it->second;
+    buffer += it->first;
+    if (&it->second == &nodeIt->second) {
+      std::cout<<"base case->   address it: "<<&it->second<<" address nodeIt(should be the one we are looking for): "<<&nodeIt->second <<std::endl;
+      //std::cout<<"it same: "<<buffer<<std::endl;
+      suffix = buffer;
+      return suffix;
+    }
+    //std::cout<<buffer<<std::endl;
+    //if (it->second.endOfWord == true)
+      //std::cout<<"true word:    "<<buffer<<std::endl;
+    child[it->first].findWordHelper(buffer,nodeIt,suffix);			//recursivly call sub map.
+    buffer.erase(buffer.end()-1);
+  }
+std::cout<<"this ran and returned with buffer: "<<buffer<<std::endl; 
+  return suffix;
 }
 
 //called by dictionary class's suggest(), search trie for any word with last char that is the same address as the argument.
-std::string trieNode::findWord(const trieNode& a) {
-  std::string word = "";
-  return findWordHelper(word,a);
+std::string trieNode::findWord(const std::map<char,trieNode>::iterator& nodeIt) {
+  std::string buffer = "";
+  std::string suffix = "";
+  //return findWordHelper(word,a);
+  return findWordHelper(buffer,nodeIt,suffix);
+  //std::cout<<suffix<<std::endl;
+  //return suffix;
 }

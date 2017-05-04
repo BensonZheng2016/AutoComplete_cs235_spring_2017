@@ -16,7 +16,8 @@ class dictionary {
   std::vector<std::string> suggest(std::string s, int n);
   void print();
   trieNode* findAny(std::string a);
-  std::string findWord(const trieNode& a);
+  std::string findWord(const std::map<char,trieNode>::iterator& nodeIt);
+  unsigned int countNodes();
 
  private:
   trie _data;  
